@@ -11,6 +11,6 @@ WildBlueberryYieldPrediction app url is https://blueberryyieldpredictionapp.onre
 **Best Model:** RandomForest, 
 **Best MAE:** -225.451, 
 **Test set mean absolute error for best params:** 241.899, 
-**Test set root mean squared error for best params:** 15.553,  
+**Test set root mean squared error for best params:** 15.553.
 
 

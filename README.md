@@ -6,11 +6,11 @@ WildBlueberryYieldPrediction app url is https://blueberryyieldpredictionapp.onre
 **Problem Statement:** The target feature is **yield **which is a continuous variable. The task is to classify this variable based on the other 17 features step-by-step by going through each day's task. The evaluation metrics will be **RMSE score**
 
 
-**Feature Selection:** Corr
-**Hyperparameter Tuning:** TuneSearchCV
-**Best Model:** RandomForest
-**Best MAE:** -225.451
-**Test set mean absolute error for best params:** 241.899 
-**Test set root mean squared error for best params:** 15.553 
+**Feature Selection:** Corr, 
+**Hyperparameter Tuning:** TuneSearchCV, 
+**Best Model:** RandomForest, 
+**Best MAE:** -225.451, 
+**Test set mean absolute error for best params:** 241.899, 
+**Test set root mean squared error for best params:** 15.553,  
 
 

@@ -1,83 +1,53 @@
+
 import streamlit as st
-import pandas as pd
-import numpy as np
 import joblib
-from sklearn.ensemble import RandomForestClassifier
-from prediction import get_prediction, ordinal_encoder
+import sklearn
+import pandas
 
-model = joblib.load(r'Model/random_forest_final.joblib')
+rf = joblib.load('randomforest.joblib')
 
-st.set_page_config(page_title="Accident Severity Prediction App",
-                   page_icon="🚧", layout="wide")
+col = ['Row#', 'clonesize', 'honeybee', 'bumbles', 'andrena', 'osmia',
+       'MaxOfUpperTRange', 'MinOfUpperTRange', 'AverageOfUpperTRange',
+       'MaxOfLowerTRange', 'MinOfLowerTRange', 'AverageOfLowerTRange',
+       'RainingDays', 'AverageRainingDays', 'fruitset', 'fruitmass', 'seeds']
 
+def prediction_yield(row, clonesize, honeybee, bumbles, osmia,maxutrange, minutrange,avgutrange,maxltrange,minltrange,avgltrange,rainingdays,avgrainingdays,fruitset,fruitmass,seeds):
 
-#creating option list for dropdown menu
-options_day = ['Sunday', "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-options_age = ['18-30', '31-50', 'Over 51', 'Unknown', 'Under 18']
-
-options_acc_area = ['Other', 'Office areas', 'Residential areas', ' Church areas',
-       ' Industrial areas', 'School areas', '  Recreational areas',
-       ' Outside rural areas', ' Hospital areas', '  Market areas',
-       'Rural village areas', 'Unknown', 'Rural village areasOffice areas',
-       'Recreational areas']
-       
-options_cause = ['No distancing', 'Changing lane to the right',
-       'Changing lane to the left', 'Driving carelessly',
-       'No priority to vehicle', 'Moving Backward',
-       'No priority to pedestrian', 'Other', 'Overtaking',
-       'Driving under the influence of drugs', 'Driving to the left',
-       'Getting off the vehicle improperly', 'Driving at high speed',
-       'Overturning', 'Turnover', 'Overspeed', 'Overloading', 'Drunk driving',
-       'Unknown', 'Improper parking']
-options_vehicle_type = ['Automobile', 'Lorry (41-100Q)', 'Other', 'Pick up upto 10Q',
-       'Public (12 seats)', 'Stationwagen', 'Lorry (11-40Q)',
-       'Public (13-45 seats)', 'Public (> 45 seats)', 'Long lorry', 'Taxi',
-       'Motorcycle', 'Special vehicle', 'Ridden horse', 'Turbo', 'Bajaj', 'Bicycle']
-options_driver_exp = ['5-10yr', '2-5yr', 'Above 10yr', '1-2yr', 'Below 1yr', 'No Licence', 'unknown']
-options_lanes = ['Two-way (divided with broken lines road marking)', 'Undivided Two way',
-       'other', 'Double carriageway (median)', 'One way',
-       'Two-way (divided with solid lines road marking)', 'Unknown']
-
-features = ['hour','day_of_week','casualties','accident_cause','vehicles_involved','vehicle_type','driver_age','accident_area','driving_experience','lanes']
+    prediction = rf.predict([[row, clonesize, honeybee, bumbles, osmia,maxutrange, minutrange,avgutrange,maxltrange,minltrange,avgltrange,rainingdays,avgrainingdays,fruitset,fruitmass,seeds]])
+    print('prediction done')
+    return prediction
 
 
-st.markdown("<h1 style='text-align: center;'>Accident Severity Prediction App 🚧</h1>", unsafe_allow_html=True)
 def main():
-    with st.form('prediction_form'):
 
-        st.subheader("Enter the input for following features:")
-        
-        hour = st.slider("Pickup Hour: ", 0, 23, value=0, format="%d")
-        day_of_week = st.selectbox("Select Day of the Week: ", options=options_day)
-        casualties = st.slider("Hour of Accident: ", 1, 8, value=0, format="%d")
-        accident_cause = st.selectbox("Select Accident Cause: ", options=options_cause)
-        vehicles_involved = st.slider("Pickup Hour: ", 1, 7, value=0, format="%d")
-        vehicle_type = st.selectbox("Select Vehicle Type: ", options=options_vehicle_type)
-        driver_age = st.selectbox("Select Driver Age: ", options=options_age)
-        accident_area = st.selectbox("Select Accident Area: ", options=options_acc_area)
-        driving_experience = st.selectbox("Select Driving Experience: ", options=options_driver_exp)
-        lanes = st.selectbox("Select Lanes: ", options=options_lanes)
-        
-        
-        submit = st.form_submit_button("Predict")
+    st.header('Blueberry Yield Prediction App')
 
-
-    if submit:
-        day_of_week = ordinal_encoder(day_of_week, options_day)
-        accident_cause = ordinal_encoder(accident_cause, options_cause)
-        vehicle_type = ordinal_encoder(vehicle_type, options_vehicle_type)
-        driver_age =  ordinal_encoder(driver_age, options_age)
-        accident_area =  ordinal_encoder(accident_area, options_acc_area)
-        driving_experience = ordinal_encoder(driving_experience, options_driver_exp) 
-        lanes = ordinal_encoder(lanes, options_lanes)
+    row = st.text_input('Row','Row# Value')
+    clonesize = st.text_input('clonesize','clonesize value')
+    honeybee = st.text_input('honeybee','bumbles_value')
+    bumbles = st.text_input('andrena','andrena values')
+    osmia = st.text_input('osmia','osmia')
+    maxutrange = st.text_input('maxutrange','maxutrange')
+    minutrange = st.text_input('minutrange','minutrange')
+    avgutrange = st.text_input('avgutrange','avgutrange')
+    maxltrange = st.text_input('maxltrange','maxltrange')
+    minltrange = st.text_input('minltrange','minltrange')
+    avgltrange = st.text_input('avgltrange','avgltrange')
+    rainingdays = st.text_input('rainingdays','rainingdays')
+    avgrainingdays= st.text_input('avgrainingdays','avgrainingdays')
+    fruitset = st.text_input('fruitset','fruitset')
+    fruitmass = st.text_input('fruitmass','fruitmass')
+    seeds = st.text_input('seeds','seeds')
+    pred=""
 
 
-        data = np.array([hour,day_of_week,casualties,accident_cause,vehicles_involved, 
-                            vehicle_type,driver_age,accident_area,driving_experience,lanes]).reshape(1,-1)
+    if st.button('Predict Yield'):
+        pred = prediction_yield(row,clonesize, honeybee, bumbles, osmia,maxutrange, minutrange,avgutrange,maxltrange,minltrange,avgltrange,rainingdays,avgrainingdays,fruitset,fruitmass,seeds)
 
-        pred = get_prediction(data=data, model=model)
-
-        st.write(f"The predicted severity is:  {pred[0]}")
+        st.success('The yield is {}'.format(pred))
 
 if __name__ == '__main__':
+
     main()
+
+
